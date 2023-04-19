@@ -5,6 +5,10 @@ enum class Suits(val desc: String, val symbol: String, val hex: String? = "", va
     HEARTS("Hearts", "♥", "&#x2665", "U+2665", "9829"),
     DIAMONDS("Diamonds", "♦", "&#x2666", "U+2666", "9830"),
     CLUBS("Clubs", "♣", "&#x2663", "U+2663", "9827");
+
+    override fun toString(): String {
+        return symbol
+    }
 }
 
 
@@ -22,6 +26,10 @@ enum class Ranks(val rank: String, val desc: String, val value: Int, val term: S
     RJ("J", "Knave", 11),
     RQ("Q", "Queen", 12),
     RK("K", "Knight", 13);
+
+    override fun toString(): String {
+        return rank
+    }
 }
 
 enum class Cards() {
