@@ -7,7 +7,7 @@
         <option name="delegatedBuild" value="false" />
         <option name="distributionType" value="WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="#JAVA_INTERNAL" />
+        <option name="gradleJvm" value="openjdk-20" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -22,6 +22,12 @@
             <option value="$PROJECT_DIR$/Topics/For loop and ranges/The roots of equation" />
             <option value="$PROJECT_DIR$/Topics/For loop and ranges/The sum of integers from a to b" />
             <option value="$PROJECT_DIR$/Topics/For loop and ranges/Theory" />
+            <option value="$PROJECT_DIR$/Topics/If expression/Find the output" />
+            <option value="$PROJECT_DIR$/Topics/If expression/Find the output (1)" />
+            <option value="$PROJECT_DIR$/Topics/If expression/Odd or even" />
+            <option value="$PROJECT_DIR$/Topics/If expression/Queens" />
+            <option value="$PROJECT_DIR$/Topics/If expression/Theory" />
+            <option value="$PROJECT_DIR$/Topics/If expression/Triangle" />
             <option value="$PROJECT_DIR$/Topics/String templates/Arithmetic expression" />
             <option value="$PROJECT_DIR$/Topics/String templates/Date and time formatting" />
             <option value="$PROJECT_DIR$/Topics/String templates/String and its Int" />
