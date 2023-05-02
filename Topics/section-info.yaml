@@ -5,3 +5,4 @@ content:
 - String templates
 - Values and variables
 - If expression
+- Named arguments

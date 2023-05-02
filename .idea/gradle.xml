@@ -7,7 +7,7 @@
         <option name="delegatedBuild" value="false" />
         <option name="distributionType" value="WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="openjdk-20" />
+        <option name="gradleJvm" value="#JAVA_INTERNAL" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -28,6 +28,11 @@
             <option value="$PROJECT_DIR$/Topics/If expression/Queens" />
             <option value="$PROJECT_DIR$/Topics/If expression/Theory" />
             <option value="$PROJECT_DIR$/Topics/If expression/Triangle" />
+            <option value="$PROJECT_DIR$/Topics/Named arguments/Car price" />
+            <option value="$PROJECT_DIR$/Topics/Named arguments/Correct invocations" />
+            <option value="$PROJECT_DIR$/Topics/Named arguments/Invocations" />
+            <option value="$PROJECT_DIR$/Topics/Named arguments/Theory" />
+            <option value="$PROJECT_DIR$/Topics/Named arguments/URL" />
             <option value="$PROJECT_DIR$/Topics/String templates/Arithmetic expression" />
             <option value="$PROJECT_DIR$/Topics/String templates/Date and time formatting" />
             <option value="$PROJECT_DIR$/Topics/String templates/String and its Int" />
