@@ -1,11 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="CardGameTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-04-19T21:08:14" hostname="MBPdeHerlander.home" time="0.864">
+<testsuite name="CardGameTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-05-03T03:43:41" hostname="MacBook-Pro-de-Herlander.local" time="0.588">
   <properties/>
-  <testcase name="start" classname="CardGameTest" time="0.864"/>
+  <testcase name="start" classname="CardGameTest" time="0.588"/>
   <system-out><![CDATA[?[1;31m
 Start test 1?[0m
-A 2 3 4 5 6 7 8 9 10 J Q K 
-♠ ♥ ♦ ♣ 
+Choose an action (reset, shuffle, get, exit):
+> reset
+Card deck is reset.
+Choose an action (reset, shuffle, get, exit):
+> get
+Number of cards:
+> 10
+K♣ Q♣ J♣ 10♣ 9♣ 8♣ 7♣ 6♣ 5♣ 4♣
+Choose an action (reset, shuffle, get, exit):
+> get
+Number of cards:
+> 43
+The remaining cards are insufficient to meet the request.
+Choose an action (reset, shuffle, get, exit):
+> reset
+Card deck is reset.
+Choose an action (reset, shuffle, get, exit):
+> get
+Number of cards:
+> 52
+K♣ Q♣ J♣ 10♣ 9♣ 8♣ 7♣ 6♣ 5♣ 4♣ 3♣ 2♣ A♣ K♥ Q♥ J♥ 10♥ 9♥ 8♥ 7♥ 6♥ 5♥ 4♥ 3♥ 2♥ A♥ K♦ Q♦ J♦ 10♦ 9♦ 8♦ 7♦ 6♦ 5♦ 4♦ 3♦ 2♦ A♦ K♠ Q♠ J♠ 10♠ 9♠ 8♠ 7♠ 6♠ 5♠ 4♠ 3♠ 2♠ A♠
+Choose an action (reset, shuffle, get, exit):
+> get
+Number of cards:
+> 1
+The remaining cards are insufficient to meet the request.
+Choose an action (reset, shuffle, get, exit):
+> exit
+Bye
+?[1;31m
+Start test 2?[0m
+Choose an action (reset, shuffle, get, exit):
+> get
+Number of cards:
+> 0
+Invalid number of cards.
+Choose an action (reset, shuffle, get, exit):
+> get
+Number of cards:
+> one
+Invalid number of cards.
+Choose an action (reset, shuffle, get, exit):
+> get
+Number of cards:
+> 53
+Invalid number of cards.
+Choose an action (reset, shuffle, get, exit):
+> exit
+Bye
+?[1;31m
+Start test 3?[0m
+Choose an action (reset, shuffle, get, exit):
+> action
+Wrong action.
+Choose an action (reset, shuffle, get, exit):
+> game
+Wrong action.
+Choose an action (reset, shuffle, get, exit):
+> exit
+Bye
+?[1;31m
+Start test 4?[0m
+Choose an action (reset, shuffle, get, exit):
+> reset
+Card deck is reset.
+Choose an action (reset, shuffle, get, exit):
+> shuffle
+Card deck is shuffled.
+Choose an action (reset, shuffle, get, exit):
+> get
+Number of cards:
+> 52
+9♠ A♣ 7♣ A♦ 8♥ 5♦ 9♥ Q♣ J♥ 9♣ 10♣ K♥ 7♦ 4♣ A♠ 10♥ K♣ 10♦ 10♠ 8♠ 7♠ Q♦ 4♦ A♥ 6♠ 2♠ 5♠ Q♠ 6♣ 3♣ 8♦ 7♥ 9♦ 3♦ J♠ 6♥ 3♥ 2♦ K♠ J♦ 2♥ 8♣ 4♠ 6♦ 5♣ Q♥ 2♣ 3♠ K♦ 5♥ J♣ 4♥
+Choose an action (reset, shuffle, get, exit):
+> exit
+Bye
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
