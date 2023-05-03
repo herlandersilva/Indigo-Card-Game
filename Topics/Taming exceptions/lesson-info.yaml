@@ -1,0 +1,6 @@
+content:
+- Theory
+- Handle arithmetic exception
+- Handle string exception
+- Print correct exception message
+- The purpose of exceptions

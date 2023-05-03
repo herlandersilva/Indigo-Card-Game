@@ -1,13 +1,6 @@
 package indigo
 
 fun main() {
-    Ranks.values().forEach { "%s ".format(it).let(::print) }
-    println()
-    Suits.values().forEach { "%s ".format(it).let(::print) }
-    println()
-    Suits.values().forEach {
-        suit -> Ranks.values().forEach {
-            rank -> "%s%s ".format(rank, suit).let(::print)
-        }
-    }
+    Util.enableToSend()
+    IndigoCardGame().`reset, shuffle, get and exit`()
 }
