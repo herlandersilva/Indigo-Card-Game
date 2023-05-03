@@ -467,6 +467,157 @@ files:
 
 
   learner_created: false
+- name: src/indigo/Util.kt
+  visible: true
+  text: |-
+    package indigo
+
+    object Util {
+        private var sendToCheck = true
+
+        fun ask(title: String): String {
+            println(title)
+            return readln().trim()
+        }
+
+        fun readln(): String {
+            if (!sendToCheck) {
+                print("> ")
+            }
+            return kotlin.io.readln()
+        }
+
+        fun disableToSend() { this.sendToCheck = false }
+        fun enableToSend() { this.sendToCheck = true }
+    }
+  learner_created: true
+- name: src/indigo/Cards.kt
+  visible: true
+  text: |-
+    package indigo
+
+    enum class Suits(val descSuit: String = "", private val symbol: String = "", val hex: String = "", val utf8: String = "", val dec: String = "") {
+        SPADES("Spades", "♠", "&#x2660", "U+2660", "9824"),
+        DIAMONDS("Diamonds", "♦", "&#x2666", "U+2666", "9830"),
+        HEARTS("Hearts", "♥", "&#x2665", "U+2665", "9829"),
+        CLUBS("Clubs", "♣", "&#x2663", "U+2663", "9827");
+
+        override fun toString(): String {
+            return symbol
+        }
+    }
+
+    enum class Ranks(private val rank: String = "", val descRank: String = "", val value: Int = -1, val term: String = "") {
+        ACE("A", "Ás", 1, "aces"),
+        TWO("2", "Two", 2, "deuces"),
+        THREE("3", "Three", 3, "treys"),
+        FOUR("4", "Four", 4),
+        FIVE("5", "Five", 5),
+        SIX("6", "Six", 6),
+        SEVEN("7", "Seven", 7),
+        EIGHT("8", "Eight", 8),
+        NINE("9", "Nine", 9),
+        TEN("10", "Ten", 10),
+        JACK("J", "Jack", 11),
+        QUEEN("Q", "Queen", 12),
+        KING("K", "King", 13);
+
+        override fun toString(): String {
+            return rank
+        }
+    }
+
+    fun `take a deck`(): MutableList<Card> {
+        val deck = mutableListOf<Card>()
+        with(deck) {
+            for (suit in Suits.values().reversed())
+                for (rank in Ranks.values().reversed())
+                    add(Card(rank, suit))
+        }
+        return deck
+    }
+  learner_created: true
+- name: src/indigo/IndigoCardGame.kt
+  visible: true
+  text: |+
+    package indigo
+
+    class IndigoCardGame() {
+        private var deck = `take a deck`()
+
+        fun `reset, shuffle, get and exit`() = this.menu()
+
+        private fun menu() {
+            while (this.actionMenu()) {}
+        }
+        private fun actionMenu(): Boolean {
+            when (Util.ask("Choose an action (reset, shuffle, get, exit):")) {
+                "reset" -> reset()
+                "shuffle" -> shuffle()
+                "get" -> getCards(Util.ask("Number of cards:"))
+                "exit" -> return exit()
+                else -> "Wrong action.".let(::println)
+            }
+            return true
+        }
+
+        private fun reset() {
+            deck = `take a deck`()
+            "Card deck is reset.".let(::println)
+        }
+
+        private fun shuffle() {
+            deck.shuffle()
+            "Card deck is shuffled.".let(::println)
+        }
+
+        private fun getCards(numOfCards: String) {
+            try {
+                val nOfCards = numOfCards.toInt()
+                if (nOfCards !in 1..52) {
+                    "Invalid number of cards.".let(::println)
+                } else if (deck.size < nOfCards) {
+                    "The remaining cards are insufficient to meet the request.".let(::println)
+                } else {
+                    val takeCards = deck.take(nOfCards)
+                    deck.removeAll(takeCards)
+                    showTheDeck(takeCards.toMutableList())
+                }
+            } catch (_: IllegalArgumentException) {
+                "Invalid number of cards.".let(::println)
+            }
+        }
+
+        private fun showTheDeck(_deck: MutableList<Card> = deck) {
+            _deck.joinToString(
+                separator = " ",
+                transform = { card: Card -> card.toString() }
+            ).let(::println)
+        }
+
+        private fun exit(): Boolean {
+            "Bye".let(::println)
+            return false
+        }
+    }
+
+
+
+  learner_created: true
+- name: src/indigo/Card.kt
+  visible: true
+  text: |
+    package indigo
+
+    data class Card(val rank: Ranks, val suit: Suits) {
+        override fun toString(): String {
+            return rank.toString() + suit.toString()
+        }
+    }
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/16510#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Wed, 03 May 2023 15:46:03 UTC"
 record: -1
