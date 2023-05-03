@@ -1,8 +1,8 @@
 package indigo
 
+import kotlin.properties.Delegates
 import kotlin.random.Random
 
-const val NUMBER_OF_DECK_CARDS = 52
 const val NUMBER_OF_CARDS_TO_DEAL = 6
 const val MESSAGE_OF_CARDS_ON_THE_TABLE = "%d cards on the table, and the top card is %s"
 
@@ -11,24 +11,17 @@ class IndigoCardGame {
     private var cardsOnTheTable: MutableList<Card> = mutableListOf()
     private var cardsOfHuman: MutableList<Card> = mutableListOf()
     private var cardsOfComputer: MutableList<Card> = mutableListOf()
+    private var scoreOfHuman = 0
+    private var scoreOfComputer = 0
+    private var humanHands: MutableList<Card> = mutableListOf()
+    private var computerHands: MutableList<Card> = mutableListOf()
+    private var humanLastWinnerHand by Delegates.notNull<Boolean>()
 
-    fun `reset, shuffle, get and exit`() = this.menu()
+    fun `play indigo card game`() = this.playingTheGame()
 
-    fun `play indigo card game`() = this.startTheGame()
-
-    private fun startTheGame() {
-        var humanPlaying: Boolean? = null
-
+    private fun playingTheGame() {
         "Indigo Card Game".let(::println)
-
-        var answer = ""
-        while (humanPlaying == null) {
-            when (answer.uppercase()) {
-                "YES" -> humanPlaying = true
-                "NO" -> humanPlaying = false
-                else -> answer = Util.ask("Play first?")
-            }
-        }
+        var humanPlaying = this.`human start playing?`()
 
         shuffle()
 
@@ -40,43 +33,41 @@ class IndigoCardGame {
         dealCards(this.cardsOfHuman)
         dealCards(this.cardsOfComputer)
 
-        while (this.cardsOnTheTable.size != NUMBER_OF_DECK_CARDS) {
-            humanPlaying = if (humanPlaying == true) {
+        lateinit var card: Card
+        while (this.cardsOfHuman.isNotEmpty() || this.cardsOfComputer.isNotEmpty()) {
+            humanPlaying = if (humanPlaying) {
                 "".let(::println).also { showCardOnTable() }
 
                 "Cards in hand: "
                     .let(::print)
                     .also { showTheCards(this.cardsOfHuman, true) }
 
-                var choice = ""
-                while (!correctChoice(choice))
-                    choice = Util.ask("Choose a card to play (1-%d):"
-                        .format(this.cardsOfHuman.size))
+                val choice = correctChoice()
 
                 if (choice == "exit") {
                     exit()
                     return
                 }
 
-                val removeCard = choice.toInt() - 1
-                this.cardsOnTheTable.add(this.cardsOfHuman[removeCard])
-                this.cardsOfHuman.removeAt(removeCard)
+                card = this.cardsOfHuman[choice.toInt() - 1]
+                this.cardsOnTheTable.add(card)
+                this.cardsOfHuman.remove(card)
 
                 false
             } else {
                 "".let(::println).also { showCardOnTable() }
 
-                val removeCard = Random.Default.nextInt(this.cardsOfComputer.size)
+                card = this.cardsOfComputer[Random.Default.nextInt(this.cardsOfComputer.size)]
+                this.cardsOnTheTable.add(card)
+                this.cardsOfComputer.remove(card)
 
                 "Computer plays %s"
-                    .format(this.cardsOfComputer[removeCard])
+                    .format(card)
                     .let(::println)
-
-                this.cardsOnTheTable.add(this.cardsOfComputer[removeCard])
-                this.cardsOfComputer.removeAt(removeCard)
-
                 true
             }
+
+            checkHand(!humanPlaying, card)
 
             if (this.deck.size >= NUMBER_OF_CARDS_TO_DEAL) {
                 if (this.cardsOfHuman.isEmpty()) {
@@ -89,48 +80,104 @@ class IndigoCardGame {
         }
 
         "".let(::println).also { showCardOnTable() }
+
+        if (this.humanHands.size == this.computerHands.size)
+            if (humanPlaying)
+                this.scoreOfHuman += 3
+            else
+                this.scoreOfComputer += 3
+        else if (this.humanHands.size > this.computerHands.size)
+            this.scoreOfHuman += 3
+        else
+            this.scoreOfComputer += 3
+
+        checkLastHand()
         exit()
     }
 
-    private fun showCardOnTable() {
-        MESSAGE_OF_CARDS_ON_THE_TABLE
-            .format(this.cardsOnTheTable.size, this.cardsOnTheTable.last())
+    private fun checkLastHand() {
+        if (this.humanLastWinnerHand) {
+            this.humanHands.addAll(this.cardsOnTheTable)
+            this.scoreOfHuman += calcOfScore()
+        } else {
+            this.computerHands.addAll(this.cardsOnTheTable)
+            this.scoreOfComputer += calcOfScore()
+        }
+        scoreOfGame()
+        this.cardsOnTheTable.clear()
+    }
+
+    private fun checkHand(humanPlayed: Boolean, card: Card) {
+        if (this.cardsOnTheTable.size > 1) {
+            val cardOnTopOfTable = this.cardsOnTheTable[this.cardsOnTheTable.size - 2]
+            if (
+                card.rank.value == cardOnTopOfTable.rank.value ||
+                card.suit.descSuit == cardOnTopOfTable.suit.descSuit
+                ) {
+                val who = if (humanPlayed) {
+                    this.humanHands.addAll(this.cardsOnTheTable)
+                    this.scoreOfHuman += calcOfScore()
+                    this.humanLastWinnerHand = true
+                    "Player"
+                } else {
+                    this.computerHands.addAll(this.cardsOnTheTable)
+                    this.scoreOfComputer += calcOfScore()
+                    this.humanLastWinnerHand = false
+                    "Computer"
+                }
+                this.cardsOnTheTable.clear()
+
+                scoreOfGame(who)
+            }
+        }
+        return
+    }
+
+    private fun calcOfScore() = cardsOnTheTable
+        .count { card: Card -> card.rank.toString() in arrayOf("A","10","J","Q","K") }
+
+    private fun scoreOfGame(winner: String? = null) {
+        if (!winner.isNullOrBlank())
+            "%s wins cards"
+                .format(winner)
+                .let(::println)
+
+        "Score: Player %d - Computer %d"
+            .format(this.scoreOfHuman, this.scoreOfComputer)
+            .let(::println)
+
+        "Cards: Player %d - Computer %d"
+            .format(this.humanHands.size, this.computerHands.size)
             .let(::println)
     }
 
-    private fun correctChoice(choice: String): Boolean {
-        if (choice == "exit") return true
-        return choice in ("1"..this.cardsOfHuman.size.toString())
-    }
-
-    private fun dealCards(dealToWhom: MutableList<Card>) {
-        dealToWhom.addAll(getCards(NUMBER_OF_CARDS_TO_DEAL.toString()))
-    }
-
-    private fun menu() {
-        while (this.actionMenu()) {}
-    }
-
-    private fun actionMenu(): Boolean {
-        when (Util.ask("Choose an action (reset, shuffle, get, exit):")) {
-            "reset" -> reset()
-            "shuffle" -> shuffle(true)
-            "get" -> getCards(Util.ask("Number of cards:"))
-            "exit" -> return exit()
-            else -> "Wrong action.".let(::println)
+    private fun `human start playing?`(): Boolean =
+        when (Util.ask("Play first?").uppercase()) {
+            "YES" -> true
+            "NO" -> false
+            else -> `human start playing?`()
         }
-        return true
-    }
 
-    private fun reset() {
-        deck = `take a deck`()
-        "Card deck is reset.".let(::println)
-    }
+    private fun showCardOnTable() =
+        if (this.cardsOnTheTable.size > 0)
+            MESSAGE_OF_CARDS_ON_THE_TABLE
+                .format(this.cardsOnTheTable.size, this.cardsOnTheTable.last())
+                .let(::println)
+        else
+            "No cards on the table".let(::println)
 
-    private fun shuffle(printMessage: Boolean = false) {
-        deck.shuffle()
-        if (printMessage) "Card deck is shuffled.".let(::println)
-    }
+    private fun correctChoice(): String =
+        when (val choice = Util.ask("Choose a card to play (1-%d):".format(this.cardsOfHuman.size))) {
+            "exit", in ("1"..this.cardsOfHuman.size.toString()) -> choice
+            else -> correctChoice()
+        }
+
+    private fun dealCards(dealToWhom: MutableList<Card>) = dealToWhom
+        .addAll(getCards(NUMBER_OF_CARDS_TO_DEAL.toString()))
+
+    private fun shuffle(printMessage: Boolean = false) = deck
+        .shuffle()
+        .also { if (printMessage) "Card deck is shuffled.".let(::println) }
 
     private fun getCards(numOfCards: String, print: Boolean = false): MutableList<Card> {
         try {
@@ -152,19 +199,14 @@ class IndigoCardGame {
         return mutableListOf()
     }
 
-    private fun showTheCards(cards: MutableList<Card> = deck, makeChoices: Boolean = false) {
-        cards
-            .mapIndexed { index: Int, card: Card ->
-                (if (makeChoices) "${index + 1})" else "")
-                    .plus("$card")
-            }
-            .toMutableList()
-            .joinToString(" ")
-            .let(::println)
-    }
+    private fun showTheCards(cards: MutableList<Card> = deck, makeChoices: Boolean = false) = cards
+        .mapIndexed { index: Int, card: Card ->
+            (if (makeChoices) "${index + 1})" else "")
+                .plus("$card")
+        }
+        .toMutableList()
+        .joinToString(" ")
+        .let(::println)
 
-    private fun exit(): Boolean {
-        "Game Over".let(::println)
-        return false
-    }
+    private fun exit() = "Game Over".let(::println)
 }
