@@ -2,6 +2,7 @@ package indigo
 
 import kotlin.properties.Delegates
 import kotlin.random.Random
+import kotlin.system.exitProcess
 
 const val NUMBER_OF_CARDS_TO_DEAL = 6
 const val MESSAGE_OF_CARDS_ON_THE_TABLE = "%d cards on the table, and the top card is %s"
@@ -44,10 +45,7 @@ class IndigoCardGame {
 
                 val choice = correctChoice()
 
-                if (choice == "exit") {
-                    exit()
-                    return
-                }
+                if (choice == "exit") exit()
 
                 card = this.cardsOfHuman[choice.toInt() - 1]
                 this.cardsOnTheTable.add(card)
@@ -57,7 +55,9 @@ class IndigoCardGame {
             } else {
                 "".let(::println).also { showCardOnTable() }
 
-                card = this.cardsOfComputer[Random.Default.nextInt(this.cardsOfComputer.size)]
+                showTheCards(this.cardsOfComputer)
+                card = choiceCardToComputer()
+
                 this.cardsOnTheTable.add(card)
                 this.cardsOfComputer.remove(card)
 
@@ -93,6 +93,49 @@ class IndigoCardGame {
 
         checkLastHand()
         exit()
+    }
+
+    private fun choiceCardToComputer(): Card {
+        val cardTopOfTable: Card? = if (this.cardsOnTheTable.isNotEmpty()) this.cardsOnTheTable.last() else null
+
+        return if (cardTopOfTable != null) {
+            choiceCardByTableTopCard(cardTopOfTable)
+        } else {
+            randomCardByComputerHand()
+        }
+    }
+
+    private fun choiceCardByTableTopCard(cardTopOfTable: Card): Card {
+        var cardsSuits = this.cardsOfComputer
+            .filter { card: Card -> card.suit == cardTopOfTable.suit }
+
+        val cardsRanks = this.cardsOfComputer
+            .filter { card: Card -> card.rank == cardTopOfTable.rank }
+
+        val cards = maxOf(cardsSuits, cardsRanks, compareBy { it.size })
+
+        return if (cards.isNotEmpty())
+            cards[Random.Default.nextInt(cards.size)]
+        else
+            randomCardByComputerHand()
+    }
+
+    private fun randomCardByComputerHand(): Card {
+        val cards = if (this.cardsOfComputer.groupBy { it.suit }.values.maxOf { it.size } > 1) {
+            this.cardsOfComputer.groupBy { it.suit }
+                .filter { it ->
+                    it.value.size == this.cardsOfComputer.groupBy { it.suit }.values.maxOf { it.size }
+                }
+                .flatMap { it.value }
+        } else {
+            this.cardsOfComputer.groupBy { it.rank }
+                .filter { it ->
+                    it.value.size == this.cardsOfComputer.groupBy { it.rank }.values.maxOf { it.size }
+                }
+                .flatMap { it.value }
+        }
+
+        return cards[Random.Default.nextInt(cards.size)]
     }
 
     private fun checkLastHand() {
@@ -208,5 +251,8 @@ class IndigoCardGame {
         .joinToString(" ")
         .let(::println)
 
-    private fun exit() = "Game Over".let(::println)
+    private fun exit() {
+        "Game Over".let(::println)
+        exitProcess(0)
+    }
 }
