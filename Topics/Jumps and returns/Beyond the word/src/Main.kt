@@ -1,0 +1,1 @@
+fun main() = (('a'..'z').toList() subtract readln().toList().toSet()).joinToString("").let(::println)
