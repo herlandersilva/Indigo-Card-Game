@@ -1,10 +1,10 @@
 type: choice
 is_multiple_choice: true
 options:
-- text: hashCode()
-- text: copy()
-- text: equals()
 - text: toString()
+- text: equals()
+- text: copy()
+- text: hashCode()
 files:
 - name: src/Main.kt
   visible: true
@@ -17,5 +17,10 @@ files:
   learner_created: false
 feedback_link: https://hyperskill.org/learn/step/20481#comment
 status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Mon, 08 May 2023 04:12:18 UTC"
 record: -1
+selected_options:
+- 2
 local_check: false
