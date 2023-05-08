@@ -16,6 +16,13 @@
             <option value="$PROJECT_DIR$/Indigo Card Game/task/build/reports/tests" />
             <option value="$PROJECT_DIR$/Indigo Card Game/task/build/test-results" />
             <option value="$PROJECT_DIR$/Indigo Card Game/task/build/tmp" />
+            <option value="$PROJECT_DIR$/Topics/Data class/Allowance for functions" />
+            <option value="$PROJECT_DIR$/Topics/Data class/Generated functions" />
+            <option value="$PROJECT_DIR$/Topics/Data class/Illegal to override" />
+            <option value="$PROJECT_DIR$/Topics/Data class/Room mystery" />
+            <option value="$PROJECT_DIR$/Topics/Data class/Theory" />
+            <option value="$PROJECT_DIR$/Topics/Data class/copy() usage" />
+            <option value="$PROJECT_DIR$/Topics/Data class/toString() modification" />
             <option value="$PROJECT_DIR$/Topics/Enum/Currencies" />
             <option value="$PROJECT_DIR$/Topics/Enum/Danger level" />
             <option value="$PROJECT_DIR$/Topics/Enum/Methods and parameters of Enum" />
@@ -54,6 +61,11 @@
             <option value="$PROJECT_DIR$/Topics/Overriding functions/Override forget" />
             <option value="$PROJECT_DIR$/Topics/Overriding functions/Override the candidate" />
             <option value="$PROJECT_DIR$/Topics/Overriding functions/Theory" />
+            <option value="$PROJECT_DIR$/Topics/Property accessors/City population" />
+            <option value="$PROJECT_DIR$/Topics/Property accessors/Field access" />
+            <option value="$PROJECT_DIR$/Topics/Property accessors/Mutable state" />
+            <option value="$PROJECT_DIR$/Topics/Property accessors/Theory" />
+            <option value="$PROJECT_DIR$/Topics/Property accessors/Weather comparison" />
             <option value="$PROJECT_DIR$/Topics/Scopes/Cyclist" />
             <option value="$PROJECT_DIR$/Topics/Scopes/Power and scopes" />
             <option value="$PROJECT_DIR$/Topics/Scopes/Theory" />
